@@ -17,7 +17,7 @@ namespace HashCodeBB_Stage1
             using (StreamReader stream = new StreamReader(path))
             {
                 string all = stream.ReadToEnd();
-                string[] result = all.Split(new string[] { " ", "\n" }, StringSplitOptions.None);
+                string[] result = all.Split(new string[] { "\n" }, StringSplitOptions.None);
                 return result;
             }
         }
