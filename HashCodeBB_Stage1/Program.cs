@@ -8,21 +8,29 @@ namespace HashCodeBB_Stage1
     {
         static void Main(string[] args)
         {
-            var pathsIn = new List<string>();
-            pathsIn.Add(@"C:\Users\filap\source\repos\HashCode\HashCodeBB_Stage1\HashCodeBB_Stage1\ExampleData\a_example.txt");
-            pathsIn.Add(@"C:\Users\filap\source\repos\HashCode\HashCodeBB_Stage1\HashCodeBB_Stage1\ExampleData\b_read_on.txt");
-            pathsIn.Add(@"C:\Users\filap\source\repos\HashCode\HashCodeBB_Stage1\HashCodeBB_Stage1\ExampleData\c_incunabula.txt");
-            pathsIn.Add(@"C:\Users\filap\source\repos\HashCode\HashCodeBB_Stage1\HashCodeBB_Stage1\ExampleData\d_tough_choices.txt");
-            pathsIn.Add(@"C:\Users\filap\source\repos\HashCode\HashCodeBB_Stage1\HashCodeBB_Stage1\ExampleData\e_so_many_books.txt");
-            pathsIn.Add(@"C:\Users\filap\source\repos\HashCode\HashCodeBB_Stage1\HashCodeBB_Stage1\ExampleData\f_libraries_of_the_world.txt");
 
-            var pathsOut = new List<string>();
-            pathsOut.Add(@"C:\Users\filap\source\repos\HashCode\HashCodeBB_Stage1\HashCodeBB_Stage1\OutputData\a_example.txt");
-            pathsOut.Add(@"C:\Users\filap\source\repos\HashCode\HashCodeBB_Stage1\HashCodeBB_Stage1\OutputData\b_read_on.txt");
-            pathsOut.Add(@"C:\Users\filap\source\repos\HashCode\HashCodeBB_Stage1\HashCodeBB_Stage1\OutputData\c_incunabula.txt");
-            pathsOut.Add(@"C:\Users\filap\source\repos\HashCode\HashCodeBB_Stage1\HashCodeBB_Stage1\OutputData\d_quite_big.out");
-            pathsOut.Add(@"C:\Users\filap\source\repos\HashCode\HashCodeBB_Stage1\HashCodeBB_Stage1\OutputData\e_so_many_books.txt");
-            pathsOut.Add(@"C:\Users\filap\source\repos\HashCode\HashCodeBB_Stage1\HashCodeBB_Stage1\OutputData\f_libraries_of_the_world.txt");
+            var beginPathExampleData = @"C:\Users\filap\source\repos\HashCode\HashCodeBB_Stage1\HashCodeBB_Stage1\ExampleData\";
+            var beginPathEOutputData = @"C:\Users\filap\source\repos\HashCode\HashCodeBB_Stage1\HashCodeBB_Stage1\OutputData\";
+
+            var pathsIn = new List<string>
+            {
+                beginPathExampleData + "a_example.txt",
+                beginPathExampleData + "b_read_on.txt",
+                beginPathExampleData + "c_incunabula.txt",
+                beginPathExampleData + "d_tough_choices.txt",
+                beginPathExampleData + "e_so_many_books.txt",
+                beginPathExampleData + "f_libraries_of_the_world.txt"
+            };
+
+            var pathsOut = new List<string>
+            {
+                beginPathEOutputData + "a_example.txt",
+                beginPathEOutputData + "b_read_on.txt",
+                beginPathEOutputData + "c_incunabula.txt",
+                beginPathEOutputData + "d_quite_big.out",
+                beginPathEOutputData + "e_so_many_books.txt",
+                beginPathEOutputData + "f_libraries_of_the_world.txt"
+            };
 
             File file = new File();
             
