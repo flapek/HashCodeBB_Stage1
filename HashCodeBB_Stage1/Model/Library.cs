@@ -4,10 +4,10 @@ using System.Text;
 
 namespace HashCodeBB_Stage1.Model
 {
-    enum ProcessType
+    public enum ProcessType
     {
-        Signup,
-        Scannded
+        SIGNUP,
+        SCANNED
     }
 
     class Library
@@ -17,6 +17,7 @@ namespace HashCodeBB_Stage1.Model
         public int SignupProcess { get; set; }
         public int BooksPerDay { get; set; }
         public int StepID { get; set; }
+        public ProcessType ProcessType { get; set; }
         public Library()
         {
             Books = new HashSet<Book>();

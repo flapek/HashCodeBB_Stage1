@@ -8,6 +8,8 @@ namespace HashCodeBB_Stage1.Model
     {
         public int Day { get; set; }
         public HashSet<Book> Books { get; set; }
-        public HashSet<Library> Libraries { get; set; }
-    } 
+        public HashSet<int> LibrariesID { get; set; }
+    }
+
+    
 }

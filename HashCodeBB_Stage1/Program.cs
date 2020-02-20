@@ -33,13 +33,20 @@ namespace HashCodeBB_Stage1
             };
 
             File file = new File();
-            
+            Scanner scanner = new Scanner();
             InputFile inputFile = new InputFile(file.ReadFile(pathsIn[0]));
 
-            foreach (var library in inputFile.Libraries)
+            scanner.Scanning(inputFile);
+
+            foreach (var item in scanner.Libraries)
             {
-                Console.WriteLine(library.ID);
-                Console.WriteLine(library.StepID);
+                Console.WriteLine(item.ID);
+                foreach (var book in item.Books)
+                {
+                    if (book != null)
+                        Console.Write(book.ID);
+                }
+                Console.WriteLine();
             }
         }
     }
