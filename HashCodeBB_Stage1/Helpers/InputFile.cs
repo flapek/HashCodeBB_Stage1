@@ -50,6 +50,7 @@ namespace HashCodeBB_Stage1.Helpers
                     });
                 }
 
+                Libraries[id].UpdateStepId(DaysForScanning);
                 ++id;
             }
 

@@ -26,17 +26,12 @@ namespace HashCodeBB_Stage1
 
             File file = new File();
             
-            InputFile inputFile = new InputFile(file.ReadFile(pathsIn[1]));
-            Console.WriteLine(inputFile.DaysForScanning);
+            InputFile inputFile = new InputFile(file.ReadFile(pathsIn[0]));
 
             foreach (var library in inputFile.Libraries)
             {
                 Console.WriteLine(library.ID);
-                foreach (var book in library.Books)
-                {
-                    Console.WriteLine(book.ID + "  " + book.Score);
-                }
-                Console.WriteLine();
+                Console.WriteLine(library.StepID);
             }
         }
     }
