@@ -18,9 +18,9 @@ namespace HashCodeBB_Stage1
             for (int i = 0; i < order.Count; i++)
             {
                 if (i == order.Count - 1)
-                    builder.Append($"{order[i].PizzaId}\n");
+                    builder.Append($"{order[i]}\n");
                 else
-                    builder.Append($"{order[i].PizzaId} ");
+                    builder.Append($"{order[i]} ");
             }
 
             return builder.ToString();
