@@ -78,7 +78,7 @@ namespace HashCodeBB_Stage1
                 library.UpdateStepId(daysLast);
             }
 
-            // wybieramy książkę do rejestracji z największą wartością wskaźnika
+            // wybieramy bibliotekę do rejestracji z największą wartością wskaźnika
             LibrarySignUp = input.Libraries.FirstOrDefault(x => input.Libraries.Max(z => z.StepID) == x.StepID);
 
             if (LibrarySignUp == null) return;
