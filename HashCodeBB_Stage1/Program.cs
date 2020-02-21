@@ -1,4 +1,5 @@
-﻿using HashCodeBB_Stage1.Helpers;
+﻿using System.Linq;
+using HashCodeBB_Stage1.Helpers;
 using System;
 using System.Collections.Generic;
 
@@ -9,7 +10,7 @@ namespace HashCodeBB_Stage1
         static void Main(string[] args)
         {
 
-            var beginPathExampleData = @"C:\Users\filap\source\repos\HashCode\HashCodeBB_Stage1\HashCodeBB_Stage1\ExampleData\";
+            var beginPathExampleData = @"/home/tomasz/Programowanie/BBcoders/HashCodeBB_Stage1/HashCodeBB_Stage1/ExampleData/";
             var beginPathEOutputData = @"C:\Users\filap\source\repos\HashCode\HashCodeBB_Stage1\HashCodeBB_Stage1\OutputData\";
 
             var pathsIn = new List<string>
@@ -36,17 +37,19 @@ namespace HashCodeBB_Stage1
             Scanner scanner = new Scanner();
             InputFile inputFile = new InputFile(file.ReadFile(pathsIn[0]));
 
-            scanner.Scanning(inputFile);
+            scanner.Simulate(inputFile);
 
-            foreach (var item in scanner.Libraries)
+            Console.WriteLine(scanner.LibrariesReady.Count);
+
+            foreach (var library in scanner.LibrariesReady)
             {
-                Console.WriteLine(item.ID);
-                foreach (var book in item.Books)
+                Console.WriteLine(library.ID + " " + library.BooksScanned.Count);
+
+                foreach (var book in library.BooksScanned)
                 {
-                    if (book != null)
-                        Console.Write(book.ID);
+                    Console.Write(book.ID + " ");
                 }
-                Console.WriteLine();
+                System.Console.WriteLine();
             }
         }
     }

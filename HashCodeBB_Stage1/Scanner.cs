@@ -10,72 +10,63 @@ namespace HashCodeBB_Stage1
     class Scanner
     {
         public List<Library> Libraries { get; set; }
-        private List<Library> LibrariesStep { get; set; }
+
+        public List<Library> LibrariesReady { get; set; }
+        public Library LibrarySignUp { get; set; }
 
         public Scanner()
         {
             Libraries = new List<Library>();
-            LibrariesStep = new List<Library>();
+            LibrariesReady = new List<Library>();
         }
 
-        public void Scanning(InputFile input)
+        public void Simulate(InputFile input)
         {
-            var currentLibrary = input.Libraries.FirstOrDefault(x => input.Libraries.Max(x => x.StepID) == x.StepID);
-            currentLibrary.ProcessType = ProcessType.SCANNED;
-            LibrariesStep.Add(currentLibrary);
-            input.Libraries.Remove(currentLibrary);
-            Libraries.Add(new Library() { ID = 0 });
-
-            for (int i = currentLibrary.SignupProcess; i < input.DaysForScanning; i++)
+            for (int currentDay = 0; currentDay < input.DaysForScanning; currentDay++)
             {
-                generateNextLibrary(input);
-                foreach (var item in LibrariesStep)
+                // jeżeli są biblioteki, które są aktualnie gotowe do skanowanie, to dodajemy do nich książki do skanowania
+                foreach (var library in LibrariesReady)
                 {
-                    if (item.ProcessType == ProcessType.SCANNED)
+                    selectBooksToScan(library);
+                }
+
+                if (LibrarySignUp == null)
+                {
+                    // jeżeli można zarejestrować jakąś bibliotekę, to ją rejestrujemy
+                    if (input.Libraries.Count != 0)
                     {
-                        scannBooks(item);
+                        generateNextLibrary(input, currentDay);
+                    } // wybór nowej biblioteki do zarejestrowania
+                }
+                else
+                {
+                    // aktualnie jedna biblioteka się rejestruje, więc sprawdzamy czy już kończy
+                    if (LibrarySignUp.SignupProcessDate.EndDate == currentDay)
+                    {
+                        // jeżeli biblioteka kończy rejestracje, to należy dodać ją do kolejki LibrariesReady i ustawić rejestrację na null
+                        LibrariesReady.Add(LibrarySignUp);
+                        LibrarySignUp = null;
                     }
                 }
-
-                UpdateLibrary(i);
             }
         }
 
-        private void UpdateLibrary(int day)
+        private void selectBooksToScan(Library library)
         {
-            var libCount = LibrariesStep.Where(x => x.ProcessType == ProcessType.SCANNED).Count();
-            var s = libCount + 1;
-            if (s > LibrariesStep.Count())
-                return;
+            var booksToScan = library.BooksToScan.OrderByDescending(x => x.Score)
+                .Take(library.BooksPerDay)
+                .ToList();
 
-            var sumDay = LibrariesStep.Take(s).Sum(x => x.SignupProcess);
-            foreach (var item in LibrariesStep)
+            foreach(var book in booksToScan)
             {
-                if (day == sumDay)
-                {
-                    LibrariesStep[s - 1].ProcessType = ProcessType.SCANNED;
-                }
+                library.BooksScanned.Add(book);
+                library.BooksToScan.Remove(book);
             }
         }
 
-        private void scannBooks(Library library)
+        private void generateNextLibrary(InputFile input, int currentDay)
         {
-            var sortedList = LibrariesStep.FirstOrDefault(x => x.ID == library.ID);
-            sortedList.Books.OrderByDescending(x => x.Score);
-
-            for (int i = 0; i < library.BooksPerDay; i++)
-            {
-                var currentBook = sortedList.Books.FirstOrDefault();
-                Libraries.FirstOrDefault(x => x.ID == library.ID).Books.Add(currentBook);
-                sortedList.Books.Remove(currentBook);
-
-            }
-
-        }
-
-        private void generateNextLibrary(InputFile input)
-        {
-            var daysSpent = LibrariesStep.Sum(x => x.SignupProcess);
+            var daysSpent = currentDay;
             var daysLast = input.DaysForScanning - daysSpent;
 
             foreach (var library in input.Libraries)
@@ -84,16 +75,14 @@ namespace HashCodeBB_Stage1
             }
             if (input.Libraries.Count == 0)
                 return;
+            
+            LibrarySignUp = input.Libraries.FirstOrDefault(x => input.Libraries.Max(z => z.StepID) == x.StepID);
 
-            var currentLibrary = input.Libraries.FirstOrDefault(x => input.Libraries.Max(z => z.StepID) == x.StepID);
-            currentLibrary.ProcessType = ProcessType.SIGNUP;
+            if(LibrarySignUp == null) return;
 
-            LibrariesStep.Add(currentLibrary);
-            Libraries.Add(new Library() { ID = Libraries.Max(x => x.ID) + 1 });
-            input.Libraries.Remove(currentLibrary);
+            LibrarySignUp.SignupProcessDate.StartDate = currentDay;
+            LibrarySignUp.SignupProcessDate.EndDate = currentDay + LibrarySignUp.SignupProcessTime - 1;
+            input.Libraries.Remove(LibrarySignUp);
         }
-
-
-
     }
 }

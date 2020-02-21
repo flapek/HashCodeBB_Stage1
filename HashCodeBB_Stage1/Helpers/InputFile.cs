@@ -37,13 +37,13 @@ namespace HashCodeBB_Stage1.Helpers
                 Libraries.Add(new Library
                 {
                     ID = id,
-                    SignupProcess = int.Parse(firstLine[1]),
+                    SignupProcessTime = int.Parse(firstLine[1]),
                     BooksPerDay = int.Parse(firstLine[2]),
                 });
 
                 for (int j = 0; j < secondLine.Length; j++)
                 {
-                    Libraries[id].Books.Add(new Book
+                    Libraries[id].BooksToScan.Add(new Book
                     {
                         ID = int.Parse(secondLine[j]),
                         Score = Books[int.Parse(secondLine[j])].Score
