@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Text;
+using System.Linq;
 using HashCodeBB_Stage1.Helpers;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace HashCodeBB_Stage1
         {
 
             var beginPathExampleData = @"/home/tomasz/Programowanie/BBcoders/HashCodeBB_Stage1/HashCodeBB_Stage1/ExampleData/";
-            var beginPathEOutputData = @"C:\Users\filap\source\repos\HashCode\HashCodeBB_Stage1\HashCodeBB_Stage1\OutputData\";
+            var beginPathEOutputData = @"/home/tomasz/Programowanie/BBcoders/HashCodeBB_Stage1/HashCodeBB_Stage1/OutputData/";
 
             var pathsIn = new List<string>
             {
@@ -33,23 +34,34 @@ namespace HashCodeBB_Stage1
                 beginPathEOutputData + "f_libraries_of_the_world.txt"
             };
 
-            File file = new File();
-            Scanner scanner = new Scanner();
-            InputFile inputFile = new InputFile(file.ReadFile(pathsIn[0]));
 
-            scanner.Simulate(inputFile);
-
-            Console.WriteLine(scanner.LibrariesReady.Count);
-
-            foreach (var library in scanner.LibrariesReady)
+            for (int i = 0; i < pathsIn.Count; i++)
             {
-                Console.WriteLine(library.ID + " " + library.BooksScanned.Count);
+                var points = 0;
+                File file = new File();
+                Scanner scanner = new Scanner();
+                InputFile inputFile = new InputFile(file.ReadFile(pathsIn[i]));
 
-                foreach (var book in library.BooksScanned)
+                scanner.Simulate(inputFile);
+
+                StringBuilder results = new StringBuilder();
+
+                results.Append(scanner.LibrariesReady.Count + $"\n");
+
+                foreach (var library in scanner.LibrariesReady)
                 {
-                    Console.Write(book.ID + " ");
+                    results.Append(library.ID + " " + library.BooksScanned.Count + $"\n");
+
+                    foreach (var book in library.BooksScanned)
+                    {
+                        points += book.Score;
+                        results.Append(book.ID + " ");
+                    }
+                    results.Append($"\n");
                 }
-                System.Console.WriteLine();
+
+                file.CreateFile(pathsOut[i], results.ToString());
+                System.Console.WriteLine("Ścieżka: " + pathsIn[i] + " " + points);
             }
         }
     }
