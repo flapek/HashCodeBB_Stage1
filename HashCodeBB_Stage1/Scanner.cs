@@ -20,8 +20,6 @@ namespace HashCodeBB_Stage1
 
         public void Simulate(InputFile input)
         {
-            sortBooks(input);
-
             for (int currentDay = 0; currentDay < input.DaysForScanning; currentDay++)
             {
                 // jeżeli są biblioteki, które są aktualnie gotowe do skanowanie, to dodajemy do nich książki do skanowania
@@ -35,7 +33,6 @@ namespace HashCodeBB_Stage1
                     // jeżeli można zarejestrować jakąś bibliotekę, to ją rejestrujemy
                     if (input.Libraries.Count != 0)
                     {
-                        System.Console.WriteLine(input.Libraries.Count);
                         generateNextLibrary(input, currentDay);
                     } // wybór nowej biblioteki do zarejestrowania
                 }
@@ -52,17 +49,10 @@ namespace HashCodeBB_Stage1
             }
         }
 
-        private void sortBooks(InputFile input)
-        {
-            foreach (var library in input.Libraries)
-            {
-                library.BooksToScan = library.BooksToScan.OrderByDescending(x => x.Score).ToList();
-            }
-        }
-
         private void selectBooksToScan(Library library)
         {
             var booksToScan = library.BooksToScan
+                .OrderByDescending(x => x.Score)
                 .Take(library.BooksPerDay)
                 .ToList();
 
