@@ -9,8 +9,8 @@ namespace HashCodeBB_Stage1
 {
     class Scanner
     {
-        public List<Library> LibrariesReady { get; set; }
-        public Library LibrarySignUp { get; set; }
+        public List<Library> LibrariesReady { get; set; } // lista bibliotek które są już zarejestrowane
+        public Library LibrarySignUp { get; set; } // biblioteka która aktualnie jest rejestrowana
 
         public Scanner()
         {
@@ -28,17 +28,19 @@ namespace HashCodeBB_Stage1
                     selectBooksToScan(library);
                 }
 
+                // jeżeli aktualnie nie jest rejestrowana żadna biblioteka ...
                 if (LibrarySignUp == null)
                 {
-                    // jeżeli można zarejestrować jakąś bibliotekę, to ją rejestrujemy
+                    // oraz istnieją biblioteki do rejestracji
                     if (input.Libraries.Count != 0)
                     {
-                        generateNextLibrary(input, currentDay);
-                    } // wybór nowej biblioteki do zarejestrowania
+                        // to wyberamy nową bibliotę do zarejestrowania
+                        selectLibraryToSignUp(input, currentDay);
+                    } 
                 }
                 else
                 {
-                    // aktualnie jedna biblioteka się rejestruje, więc sprawdzamy czy już kończy
+                    // aktualnie jedna biblioteka się rejestruje, więc sprawdzamy czy już skończyła
                     if (LibrarySignUp.SignupProcessDate.EndDate <= currentDay)
                     {
                         // jeżeli biblioteka kończy rejestracje, to należy dodać ją do kolejki LibrariesReady i ustawić rejestrację na null
@@ -51,11 +53,13 @@ namespace HashCodeBB_Stage1
 
         private void selectBooksToScan(Library library)
         {
+            // wybieramy książki o najlepszym wyniku punktowym
             var booksToScan = library.BooksToScan
                 .OrderByDescending(x => x.Score)
                 .Take(library.BooksPerDay)
                 .ToList();
 
+            // dodajemy książki do listy do skanowania dla danej biblioteki
             foreach (var book in booksToScan)
             {
                 library.BooksScanned.Add(book);
@@ -63,22 +67,23 @@ namespace HashCodeBB_Stage1
             }
         }
 
-        private void generateNextLibrary(InputFile input, int currentDay)
+        private void selectLibraryToSignUp(InputFile input, int currentDay)
         {
             var daysSpent = currentDay;
-            var daysLast = input.DaysForScanning - daysSpent;
+            var daysLast = input.DaysForScanning - daysSpent; // obliczamy ile dni pozostało
 
             foreach (var library in input.Libraries)
             {
+                // aktualizujemy wskaźnik według tego ile dni pozostało
                 library.UpdateStepId(daysLast);
             }
 
-            if (input.Libraries.Count == 0) return;
-
+            // wybieramy książkę do rejestracji z największą wartością wskaźnika
             LibrarySignUp = input.Libraries.FirstOrDefault(x => input.Libraries.Max(z => z.StepID) == x.StepID);
 
             if (LibrarySignUp == null) return;
 
+            // zapisujemy datę zakończenia rejestracji i usuwamy bibliotekę z danych wejściowych
             LibrarySignUp.SignupProcessDate.StartDate = currentDay;
             LibrarySignUp.SignupProcessDate.EndDate = currentDay + LibrarySignUp.SignupProcessTime - 1;
             input.Libraries.Remove(LibrarySignUp);
